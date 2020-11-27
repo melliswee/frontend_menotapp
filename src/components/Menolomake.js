@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Menolomake() {
     let date = new Date();
     const classes = useStyles();
-    const [meno, setValues] = useState( { id: '0', maara: '', kohde: {menotyyppiId: '0', menotyyppiNimi: '', tarkennus: ''}, pvm: date } );
+    const [meno, setValues] = useState( { id: '0', maara: '', kohde: {menotyyppiId: '0', menotyyppiNimi: ''}, tarkennus: '', pvm: date } );
 
 
     const muuta = (e) => {
@@ -39,16 +39,16 @@ export default function Menolomake() {
             ...meno, pvm: date
         });
     }
-
-    
-
+    /* muutettu datan rakennetta yksinkertaisemmaksi niin ettei sisäkkäisiä objelteja ole, joten voidaan käyttää muuta-funktiota
     const muutaKohdeNimi = (e) => {
         let uusiKohde = { menotyyppiNimi: e.target.value, tarkennus: meno.kohde.tarkennus }
         setValues( {
             ...meno,  kohde: uusiKohde
         });
     }
-
+    */
+    /* datan rakennetta muutettu noudattamaan tietokantaan sopivalla tavalla: tarkennus on tapahtuman ominaisuus, ei menotyypin --> voi käyttää muuta-funktiota
+    oli näin ennen: {tapahtuma_id: '1', maara: '50', kohde: {menotyyppiId: '1', menotyyppiNimi: 'Ruoka ja juoma kotona', tarkennus: 'Alepa'}, pvm: '25.09.2020'}
     const muutaKohdeTarkennus = (e) => {
         let uusiKohde = { menotyyppiNimi: meno.kohde.menotyyppiNimi, tarkennus: e.target.value }
         setValues( {
@@ -56,11 +56,12 @@ export default function Menolomake() {
         });
        
     }
+    */
 
     const lisaaMeno = (e) => {
         e.preventDefault();
         //tässä vain tyhjennetään lomake
-        setValues({id: '0', maara: '', kohde: {menotyyppiId: '0', menotyyppiNimi: '', tarkennus: ''}, pvm: date });
+        setValues({id: '0', maara: '', menotyyppiNimi: '', tarkennus: '', pvm: date });
     }
 
     return (
@@ -90,8 +91,8 @@ export default function Menolomake() {
                 <InputLabel id='menotyyppiNimi'>Menotyyppi</InputLabel><br/>
                 <Select
                     name='menotyyppiNimi'
-                    value={ meno.kohde.menotyyppiNimi}
-                    onChange={ (e) => muutaKohdeNimi(e) }
+                    value={ meno.menotyyppiNimi}
+                    onChange={ (e) => muuta(e) }
                     label="Menotyyppi"
                     
                 >
@@ -118,8 +119,8 @@ export default function Menolomake() {
                 <TextField
                     id="outlined-multiline-tarkennus"
                     name='tarkennus'
-                    value={meno.kohde.tarkennus}
-                    onChange={ (e) => muutaKohdeTarkennus(e)}
+                    value={meno.tarkennus}
+                    onChange={ (e) => muuta(e)}
                     label="Tarkennus"
                     //defaultValue="Muistiinpano" //valitse joko tämä tai value, ei molempia
                     variant="outlined"
