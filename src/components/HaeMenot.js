@@ -24,10 +24,11 @@ import Menolista from './Menolista';
         haeKaikkiMenot();
    }, [])
 
+   
    if (virhe.length > 0) {
      return ( <Typography>{ virhe }</Typography> );
    }
-
+   
    if (menot.length > 0) {
      return ( <Menolista menot={ menot } /> );
    }

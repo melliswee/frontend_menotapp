@@ -1,39 +1,130 @@
-import React from 'react';
-import Jaottelija from './Jaottelija';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import {FormControl, InputLabel} from '@material-ui/core/';
-import Button from '@material-ui/core/Button';
-import Summaaja from './Summaaja';
-import {Container, Typography} from '@material-ui/core';
+import React, {useState} from 'react';
+import { DataGrid } from '@material-ui/data-grid';
+import {Typography, Button} from '@material-ui/core';
+import axios from 'axios';
 
-
+//https://material-ui.com/components/tables/#data-table --> käytettiin apuna material-ui:n datagridiä, jolla 
+// pystyy sorttaamaan sarakkeiden tiedot helposti nousevaksi ja laskevaksi
+//alla kommenteissa on alkuperäinen himmeli, jossa oli id:n kanssa ongelmia ja jolla listasin menot
 function Menolista(props) {
 
-    const jaottele = (e) => {
-        e.preventDefault();
-        return (<Jaottelija jaettava = {props.menot}/>)
+  const url = 'http://localhost:8080';
+
+  const [viesti, setViesti] = useState('');
+  const [menot, setMenot] = useState(props.menot);
+
+
+  const poista = async (id) => {
+    try {
+     // Kutsu backista poistoa
+     const response = await axios.get('http://localhost:8080/meno/delete/' + id);
+
+     // Jos se onnistui, päivitä käyttöliittymä
+     if (response.status === 200) {
+      // Aseta objektitaulukko kuntoon
+      const uusiMenot = await menot.filter(meno => meno.id !== id);
+      setMenot(uusiMenot);
+      // Laita viesti kuntoon
+      setViesti('Poisto onnistui');
+     }
+    } catch (error) {
+      setViesti('Poisto ei onnistunut');
     }
-    
+  }
+
+    const columns = [
+        { field: 'id', headerName: 'ID', width: 70 },
+        { field: 'menotyyppiNimi', headerName: 'Menotyyppi', width: 200 },
+        { field: 'tarkennus', headerName: 'Tarkennus', width: 200 },
+        {
+          field: 'maara',
+          headerName: 'Määrä',
+          type: 'number',
+          width: 100,
+        },
+        {
+            field: 'pvm',
+            headerName: 'Päivämäärä',
+            type: 'date',
+            width: 150,
+          },
+          {
+            field: "",
+            headerName: "",
+            sortable: false,
+            width: 100,
+            disableClickEventBubbling: true,
+            renderCell: (params: CellParams) => (
+              <Button
+                color='primary'
+                variant='outlined'
+                onClick={() => {
+                  const api: GridApi = params.api;
+                  const fields = api
+                    .getAllColumns()
+                    .map((c) => c.field)
+                    .filter((c) => c !== "__check__" && !!c);
+                  const thisRow = {};
+      
+                  fields.forEach((f) => {
+                    thisRow[f] = params.getValue(f);
+                  });
+      
+                  return alert(JSON.stringify(thisRow, null, 4));
+                }}
+              >
+                Edit
+              </Button>
+            )
+          },
+          {
+            field: "",
+            headerName: "",
+            sortable: false,
+            width: 100,
+            disableClickEventBubbling: true,
+            renderCell: (params: CellParams) => (
+              <Button
+                color='secondary'
+                variant='outlined'
+                onClick={() => {
+                  const api: GridApi = params.api;
+                  const fields = api
+                    .getAllColumns()
+                    .map((c) => c.field)
+                    .filter((c) => c !== "__check__" && !!c);
+                  const thisRow = {};
+      
+                  fields.forEach((f) => {
+                    thisRow[f] = params.getValue(f);
+                  });
+      
+                  poista(thisRow.id);
+                }}
+              >
+                Delete
+              </Button>
+            )
+          }
+      ];
+//<IconButton onClick={() => poista(matka.id)}><DeleteIcon className={ classes.icon }/></IconButton>
+      const rows = menot;
+
+      return (
+
+        <div>
+            <Typography variant='h6' color='secondary'>Tässä ovat kaikki menosi. Voit järjestellä menot kunkin sarakkeen mukaan nousevaksi tai laskevaksi.</Typography>
+            <div style={{ height: 500, width: '100%' }}>
+              <DataGrid rows={rows} columns={columns} pageSize={10} />
+            </div>
+      <div>{viesti}</div>
+        </div>
+      );
+
+   /*
     return ( 
         
         <div>
-        <FormControl>
-        <InputLabel id='nappi'></InputLabel>
-            <Button 
-                variant="outlined"
-                size="large" 
-                color="secondary"
-                type='submit'
-                onClick={ (e) => jaottele(e) } 
-            > Kuukausittain
-            </Button>
-        </FormControl>
         <Container>
             <Typography variant='h6' color='secondary'>Menot</Typography>
         <p></p>
@@ -76,7 +167,9 @@ function Menolista(props) {
         </TableContainer>
         </Container>
         </div>
-    );
+        );
+        */
+    
 }
 
 

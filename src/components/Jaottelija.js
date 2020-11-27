@@ -1,5 +1,5 @@
 import React from 'react';
-import MenolistaKuukausittain from './MenolistaKuukausittain';
+import SummaKuukausittain from './SummaKuukausittain';
 
 function Jaottelija (props) {
     const kuukaudet = [
@@ -33,7 +33,7 @@ function Jaottelija (props) {
     })
 
 
-    return ( <MenolistaKuukausittain kuukaudet={ kuukaudet } /> );
+    return ( <SummaKuukausittain kuukaudet={ kuukaudet } /> );
 }
 
 export default Jaottelija;

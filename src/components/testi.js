@@ -1,4 +1,4 @@
-const kuukaudet = [
+/*const kuukaudet = [
     {nimi: "Tammikuu", nro: 1, summa: 0},
     {nimi: "Helmikuu", nro: 2, summa: 0},
     {nimi: "Maaliskuu", nro: 3, summa: 0},
@@ -44,3 +44,4 @@ const menot = [{tapahtuma_id: '1', maara: '50', menotyyppiNimi: 'Ruoka ja juoma 
                     }
                 }
             }
+            */

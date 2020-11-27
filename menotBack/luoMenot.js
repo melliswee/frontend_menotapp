@@ -24,7 +24,7 @@ const menot = [{tapahtuma_id: '1', maara: '50', menotyyppiNimi: 'Ruoka ja juoma 
 db.serialize( () => {
 
   let sql = "CREATE TABLE Meno (" +
-   "tapahtuma_id integer PRIMARY KEY NOT NULL, " +
+   "id integer PRIMARY KEY NOT NULL, " +
    "maara integer NOT NULL, " +
    "tarkennus text, " +
    "menotyyppiNimi text NOT NULL, " +
@@ -37,7 +37,7 @@ db.serialize( () => {
     console.log("Menotaulu tehtiin");
   })
 
-  sql = "INSERT INTO `meno` (`tapahtuma_id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
+  sql = "INSERT INTO `meno` (`id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
   " VALUES (1, '33', 'viikon ruoat', 'Ruoka ja juoma kotona', '2020-02-23')";
   db.run(sql, (err) => {
     if (err) {
@@ -46,8 +46,8 @@ db.serialize( () => {
     console.log("Ruuat lisättiin");
   });
 
-  sql = "INSERT INTO `meno` (`tapahtuma_id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
-  " VALUES (3, '22', 'viikon ruoat', 'Ruoka ja juoma kotona', '2020-03-23')";
+  sql = "INSERT INTO `meno` (`id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
+  " VALUES (3, '22', 'ravintola Cool Greens', 'Ruoka ja juoma ulkona', '2020-03-01')";
   db.run(sql, (err) => {
     if (err) {
       return console.log(err.message);
@@ -55,8 +55,8 @@ db.serialize( () => {
     console.log("Ruuat lisättiin");
   });
 
-  sql = "INSERT INTO `meno` (`tapahtuma_id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
-  " VALUES (4, '100', 'viikon ruoat', 'Ruoka ja juoma kotona', '2020-04-23')";
+  sql = "INSERT INTO `meno` (`id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
+  " VALUES (4, '100', 'Friteerauskeitin', 'Kodin hankinnat', '2020-04-11')";
   db.run(sql, (err) => {
     if (err) {
       return console.log(err.message);
@@ -64,8 +64,8 @@ db.serialize( () => {
     console.log("Ruuat lisättiin");
   });
 
-  sql = "INSERT INTO `meno` (`tapahtuma_id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
-  " VALUES (5, '11', 'viikon ruoat', 'Ruoka ja juoma kotona', '2020-05-23')";
+  sql = "INSERT INTO `meno` (`id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
+  " VALUES (5, '11', 'nettilasku', 'Tietoliikenne ja viestintä', '2020-05-07')";
   db.run(sql, (err) => {
     if (err) {
       return console.log(err.message);
@@ -73,8 +73,8 @@ db.serialize( () => {
     console.log("Ruuat lisättiin");
   });
 
-  sql = "INSERT INTO `meno` (`tapahtuma_id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
-  " VALUES (6, '12', 'viikon ruoat', 'Ruoka ja juoma kotona', '2020-11-23')";
+  sql = "INSERT INTO `meno` (`id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
+  " VALUES (6, '50', 'matkakassa', 'Oma säästökohde', '2020-11-02')";
   db.run(sql, (err) => {
     if (err) {
       return console.log(err.message);
@@ -82,8 +82,8 @@ db.serialize( () => {
     console.log("Ruuat lisättiin");
   });
 
-  sql = "INSERT INTO `meno` (`tapahtuma_id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
-  " VALUES (7, '22', 'ravintoaruoat', 'Ruoka ja juoma ulkona', '2020-11-24')";
+  sql = "INSERT INTO `meno` (`id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
+  " VALUES (7, '22', 'ravintoaruoat', 'Ruoka ja juoma ulkona', '2020-11-16')";
   db.run(sql, (err) => {
     if (err) {
       return console.log(err.message);
@@ -92,8 +92,8 @@ db.serialize( () => {
   });
 });
 
-sql = "INSERT INTO `meno` (`tapahtuma_id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
-" VALUES (2, '50', 'viikon ruoat', 'Ruoka ja juoma kotona', '2020-01-23')";
+sql = "INSERT INTO `meno` (`id`, `maara`, `tarkennus`, `menotyyppiNimi`, `pvm`) "+
+" VALUES (2, '50', 'viikon ruoat', 'Ruoka ja juoma kotona', '2020-01-01')";
 db.run(sql, (err) => {
   if (err) {
     return console.log(err.message);
@@ -141,11 +141,11 @@ menot.map(tapahtuma => {
 })
 */
 
-db.each("SELECT tapahtuma_id, maara, menotyyppiNimi, tarkennus, pvm FROM meno", (err, row) => {
+db.each("SELECT id, maara, menotyyppiNimi, tarkennus, pvm FROM meno", (err, row) => {
   if (err) {
     return console.log(err.message);
   }
-  console.log(row.tapahtuma_id + ", " + row.menotyyppiNimi + ", " + row.tarkennus + ", " + row.maara + ", " + row.pvm);
+  console.log(row.id + ", " + row.menotyyppiNimi + ", " + row.tarkennus + ", " + row.maara + ", " + row.pvm);
 
 });
 

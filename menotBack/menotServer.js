@@ -48,7 +48,7 @@ app.post('/meno/add',  (req, res, next) => {
     // Lomakkeelta tulleet tiedot
      let tap = req.body;
  
-     db.run('INSERT INTO meno (maara, tyyppiId, pvm) VALUES (?, ?, ?)', [tap.nimi, tap.email, kuva], function (error, result) {
+     db.run('INSERT INTO meno (menotyyppiNimi, tarkennus, maara, pvm) VALUES (?, ?, ?, ?)', [tap.menotyyppiNimi, tap.tarkennus, tap.maara, tap.pvm], function (error, result) {
          if (error) throw error;
  
          return res.status(200).json( {count: this.changes} );

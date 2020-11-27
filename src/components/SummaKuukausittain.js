@@ -8,7 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {Container, Typography} from '@material-ui/core';
 
-function MenolistaKuukausittain(props) {
+function SummaKuukausittain(props) {
     
     return ( 
         <div>
@@ -47,4 +47,4 @@ function MenolistaKuukausittain(props) {
 }
 
 
-export default MenolistaKuukausittain;
+export default SummaKuukausittain;

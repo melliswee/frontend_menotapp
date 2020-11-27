@@ -5,6 +5,7 @@ import { InputLabel, FormGroup, MenuItem, Select, TextField, Button, Container, 
 import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import fiLocale from 'date-fns/locale/fi';
+import axios from 'axios';
 
 //lomakkeessa pitäisi olla syötteen tarkistus jotta saadaan vain oikeanlaisia tietoja lisättyä
 //pitää keksiä tapa saada seuraava uniikki id lisättävälle riville
@@ -20,11 +21,13 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+  const url = 'http://localhost:8080';
+
 export default function Menolomake() {
     let date = new Date();
     const classes = useStyles();
     const [meno, setValues] = useState( { id: '0', maara: '', kohde: {menotyyppiId: '0', menotyyppiNimi: ''}, tarkennus: '', pvm: date } );
-
+    const [viesti, setViesti] = useState('');
 
     const muuta = (e) => {
         setValues( {
@@ -60,9 +63,31 @@ export default function Menolomake() {
 
     const lisaaMeno = (e) => {
         e.preventDefault();
-        //tässä vain tyhjennetään lomake
-        setValues({id: '0', maara: '', menotyyppiNimi: '', tarkennus: '', pvm: date });
+
+        const formData = {
+            menotyyppiNimi: meno.menotyyppiNimi,
+            tarkennus: meno.tarkennus,
+            maara: meno.maara,
+            pvm: meno.pvm.getFullYear()+ '-' + meno.pvm.getMonth() + '-' + meno.pvm.getDate(),
+          }
+
+        axios.post(url + '/meno/add', formData)
+        .then(response => {
+          if (response.status === 200) {
+              setValues({
+                  menotyyppiNimi: '',
+                  tarkennus: '',
+                  maara: '',
+                  pvm: new Date(),
+              });
+              setViesti('Lisättiin');
+          } else {
+              setViesti('Lisäys ei onnistunut');
+          }
+      })
     }
+
+    //tässä vain tyhjennetään lomake setValues({id: '0', maara: '', menotyyppiNimi: '', tarkennus: '', pvm: date });
 
     return (
         <div>
@@ -96,19 +121,19 @@ export default function Menolomake() {
                     label="Menotyyppi"
                     
                 >
-                    <MenuItem value={1}>Ruoka ja juoma kotona</MenuItem>
-                    <MenuItem value={2}>Ruoka ja juoma ulkona</MenuItem>
-                    <MenuItem value={3}>Asuminen</MenuItem>
-                    <MenuItem value={4}>Vaatteet</MenuItem>
-                    <MenuItem value={5}>Terveys</MenuItem>
-                    <MenuItem value={6}>Liikenne</MenuItem>
-                    <MenuItem value={7}>Tietoliikenne ja viestintä</MenuItem>
-                    <MenuItem value={9}>Vakuutukset</MenuItem>
-                    <MenuItem value={10}>Kodin hankinnat</MenuItem>
-                    <MenuItem value={11}>Virkistys ja vapaa-aika</MenuItem>
-                    <MenuItem value={12}>Oma säästökohde</MenuItem>
-                    <MenuItem value={13}>Lainanhoito</MenuItem>
-                    <MenuItem value={14}>Muut menot</MenuItem>
+                    <MenuItem value='Ruoka ja juoma kotona'>Ruoka ja juoma kotona</MenuItem>
+                    <MenuItem value='Ruoka ja juoma ulkona'>Ruoka ja juoma ulkona</MenuItem>
+                    <MenuItem value='Asuminen'>Asuminen</MenuItem>
+                    <MenuItem value='Vaatteet'>Vaatteet</MenuItem>
+                    <MenuItem value='Terveys'>Terveys</MenuItem>
+                    <MenuItem value='Liikenne'>Liikenne</MenuItem>
+                    <MenuItem value='Tietoliikenne ja viestintä'>Tietoliikenne ja viestintä</MenuItem>
+                    <MenuItem value='Vakuutukset'>Vakuutukset</MenuItem>
+                    <MenuItem value='Kodin hankinnat'>Kodin hankinnat</MenuItem>
+                    <MenuItem value='Virkistys ja vapaa-aika'>Virkistys ja vapaa-aika</MenuItem>
+                    <MenuItem value='Oma säästökohde'>Oma säästökohde</MenuItem>
+                    <MenuItem value='Lainanhoito'>Lainanhoito</MenuItem>
+                    <MenuItem value='Muut menot'>Muut menot</MenuItem>
                 </Select><br/>
             </FormGroup>
         </FormControl>
@@ -158,6 +183,7 @@ export default function Menolomake() {
             > Lisää
             </Button>
         </FormControl>
+        <Typography style={ {marginTop: 20} }>{ viesti }</Typography>
         </Container>
         </div>
     );
