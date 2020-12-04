@@ -2,6 +2,16 @@ import React, {useState} from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 import {Typography, Button} from '@material-ui/core';
 import axios from 'axios';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+
+//import MenolomakeEdit from './MenolomakeEdit';
+//import TextField from '@material-ui/core/TextField';
+//import Dialog from '@material-ui/core/Dialog';
+//import DialogActions from '@material-ui/core/DialogActions';
+//import DialogContent from '@material-ui/core/DialogContent';
+//import DialogContentText from '@material-ui/core/DialogContentText';
+//import DialogTitle from '@material-ui/core/DialogTitle';
 
 //https://material-ui.com/components/tables/#data-table --> käytettiin apuna material-ui:n datagridiä, jolla 
 // pystyy sorttaamaan sarakkeiden tiedot helposti nousevaksi ja laskevaksi
@@ -12,12 +22,25 @@ function Menolista(props) {
 
   const [viesti, setViesti] = useState('');
   const [menot, setMenot] = useState(props.menot);
+  //let date = new Date();
+  //const [meno, setValues] = useState( { id: '0', maara: '', menotyyppiNimi: '', tarkennus: '', pvm: date } );
+  //const [open, setOpen] = useState(false);
 
+  /*dialog-box
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  //dialog-box
+  const handleClose = () => {
+    setOpen(false);
+  };
+*/
 
   const poista = async (id) => {
     try {
      // Kutsu backista poistoa
-     const response = await axios.get('http://localhost:8080/meno/delete/' + id);
+     const response = await axios.get(url +'/meno/delete/' + id);
 
      // Jos se onnistui, päivitä käyttöliittymä
      if (response.status === 200) {
@@ -30,6 +53,12 @@ function Menolista(props) {
     } catch (error) {
       setViesti('Poisto ei onnistunut');
     }
+  }
+
+  const muokkaa = async (thisRow) => {
+      //halutut tiedot saatiin ja alert toimi
+      alert("Editoimisominaisuutta en saanut valmiiksi. Editoitavan menon id " + thisRow.id + ' muut tiedot: Määrä: ' + thisRow.maara + ', Muistiinpano: ' + thisRow.tarkennus + ', Kategoria: ' + thisRow.menotyyppiNimi + ', Päivämäärä: ' + thisRow.pvm);
+      //return <MenolomakeEdit meno={meno}/>
   }
 
     const columns = [
@@ -49,16 +78,17 @@ function Menolista(props) {
             width: 150,
           },
           {
-            field: "",
-            headerName: "",
+            field: "Muokkaa",
+            headerName: "Muokkaa",
             sortable: false,
             width: 100,
             disableClickEventBubbling: true,
             renderCell: (params: CellParams) => (
-              <Button
+              <Button 
                 color='primary'
                 variant='outlined'
                 onClick={() => {
+                  //setOpen(true);
                   const api: GridApi = params.api;
                   const fields = api
                     .getAllColumns()
@@ -69,17 +99,28 @@ function Menolista(props) {
                   fields.forEach((f) => {
                     thisRow[f] = params.getValue(f);
                   });
-      
-                  return alert(JSON.stringify(thisRow, null, 4));
-                }}
-              >
-                Edit
+
+                  {/*}
+                  setValues({
+                    id: thisRow.id,
+                    menotyyppiNimi: thisRow.menotyyppiNimi,
+                    tarkennus: thisRow.tarkennus,
+                    maara: thisRow.maara,
+                    pvm: thisRow.pvm,
+                });
+                */}
+                //return (<MenolomakeEdit meno={meno}/>);
+
+                muokkaa(thisRow);
+                  
+                }}>
+                <EditIcon/>
               </Button>
             )
           },
           {
-            field: "",
-            headerName: "",
+            field: "Poista",
+            headerName: "Poista",
             sortable: false,
             width: 100,
             disableClickEventBubbling: true,
@@ -102,24 +143,28 @@ function Menolista(props) {
                   poista(thisRow.id);
                 }}
               >
-                Delete
+                <DeleteIcon/>
               </Button>
             )
           }
       ];
-//<IconButton onClick={() => poista(matka.id)}><DeleteIcon className={ classes.icon }/></IconButton>
+
       const rows = menot;
 
       return (
 
         <div>
-            <Typography variant='h6' color='secondary'>Tässä ovat kaikki menosi. Voit järjestellä menot kunkin sarakkeen mukaan nousevaksi tai laskevaksi.</Typography>
+            <Typography variant='h6' color='secondary'>Menot</Typography>
             <div style={{ height: 500, width: '100%' }}>
               <DataGrid rows={rows} columns={columns} pageSize={10} />
             </div>
-      <div>{viesti}</div>
+            <div>{viesti}</div>
         </div>
-      );
+      );    
+}
+
+
+export default Menolista; 
 
    /*
     return ( 
@@ -169,8 +214,3 @@ function Menolista(props) {
         </div>
         );
         */
-    
-}
-
-
-export default Menolista; 

@@ -54,6 +54,22 @@ app.post('/meno/add',  (req, res, next) => {
          return res.status(200).json( {count: this.changes} );
      })
  })
+//toimiiko?
+ app.post('/meno/muokkaa',  (req, res, next) => {
+     let tap = req.body; 
+     /*
+     let id = req.params.id;
+     let maara = req.params.maara;
+     let tarkennus = req.params.tarkennus;
+     let menotyyppiNimi = req.params.menotyyppiNimi;
+     let pvm = req.params.pvm;
+    */
+     db.run('UPDATE meno SET menotyyppiNimi=?, tarkennus=?, maara=?, pvm=?) WHERE id = ?', [tap.menotyyppiNimi, tap.tarkennus, tap.maara, tap.pvm, tap.id], function (error, result) {
+         if (error) throw error;
+ 
+         return res.status(200).json( {count: this.changes} );
+     })
+ })
 
 app.get('/meno/delete/:id', (req, res, next) => {
     // Otetaan parametrina tulleen henkilon id

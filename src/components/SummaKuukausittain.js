@@ -8,6 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import {Container, Typography} from '@material-ui/core';
 
+//ei käytetä vielä mihinkään, yritys luoda kuukausittainen summaus menoista
 function SummaKuukausittain(props) {
     
     return ( 

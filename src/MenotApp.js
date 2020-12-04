@@ -2,6 +2,7 @@
 import React from 'react';
 import {createMuiTheme, MuiThemeProvider, CssBaseline} from '@material-ui/core'
 //import Menolista from './components/Menolista';
+import MenolomakeEdit from './components/MenolomakeEdit';
 import Menolomake from './components/Menolomake';
 import MenuMUI from './components/MenuMUI';
 import { blue, pink } from '@material-ui/core/colors';
@@ -54,10 +55,12 @@ function MenotApp() {
                     <Route exact path='/' component={ Esittelysivu }/>
                     <Route path='/etusivu' component={ Esittelysivu }/>
                     <Route path='/listaa' component={HaeMenot}/>
-                    
                     {/*<Route path='/listaa' 
                         render={(props) => <Menolista {...props} menot={ menot }/>} />*/}
                     <Route path='/lisaa' component={ Menolomake }/>
+                    <Route path='/meno/muokkaa' component={ MenolomakeEdit } />
+                    {/* <Route path='/meno/muokkaa' component={ MenolomakeEdit } />
+                    /:id/:maara/:tarkennus/:menotyyppiNimi/:pvm */}
                     <Route component={ MenotApp }/>
                 </Switch>
 

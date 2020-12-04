@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import { InputLabel, FormGroup, MenuItem, Select, TextField, Button, Container, Typography } from '@material-ui/core/';
@@ -6,25 +6,33 @@ import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns';
 import fiLocale from 'date-fns/locale/fi';
 import axios from 'axios';
-import '../App.css'
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
-      margin: theme.spacing(1),
+      margin: theme.spacing(3),
       minWidth: 210,
       marginLeft: 0
     },
     selectEmpty: {
-      marginTop: theme.spacing(1),
+      marginTop: theme.spacing(2),
     },
   }));
 
   const url = 'http://localhost:8080';
 
-export default function Menolomake() {
-    let date = new Date();
+function MenolomakeEdit(props) {
     const classes = useStyles();
-    const [meno, setValues] = useState( { id: '0', maara: '', menotyyppiNimi: '', tarkennus: '', pvm: date } );
+
+    //let {id, maara, tarkennus, menotyyppiNimi, pvm} = useParams();
+
+    const [meno, setValues] = useState({
+        id: props.meno.id,
+        maara: props.meno.maara,
+        tarkennus: props.meno.tarkennus,
+        menotyyppiNimi: props.meno.menotyyppiNimi,
+        pvm: props.meno.pvm
+    });
+
     const [viesti, setViesti] = useState('');
 
     const muuta = (e) => {
@@ -33,75 +41,37 @@ export default function Menolomake() {
         });
     }
 
-    //vaikuttaa siltä ettei KeyBoardDatePickerin kanssa voi käyttää e.target:ia, koska sitä ei ole ("e.target is not defined" tms? 
-    //joten oli tehtävä oma metodi päivän muuttamiselle
     const muutaPaiva = date => {
         setValues({
             ...meno, pvm: date
         });
     }
-    /* muutettu datan rakennetta yksinkertaisemmaksi niin ettei sisäkkäisiä objelteja ole, joten voidaan käyttää muuta-funktiota
-    const muutaKohdeNimi = (e) => {
-        let uusiKohde = { menotyyppiNimi: e.target.value, tarkennus: meno.kohde.tarkennus }
-        setValues( {
-            ...meno,  kohde: uusiKohde
-        });
-    }
-    */
-    /* datan rakennetta muutettu noudattamaan tietokantaan sopivalla tavalla: tarkennus on tapahtuman ominaisuus, ei menotyypin --> voi käyttää muuta-funktiota
-    oli näin ennen: {tapahtuma_id: '1', maara: '50', kohde: {menotyyppiId: '1', menotyyppiNimi: 'Ruoka ja juoma kotona', tarkennus: 'Alepa'}, pvm: '25.09.2020'}
-    const muutaKohdeTarkennus = (e) => {
-        let uusiKohde = { menotyyppiNimi: meno.kohde.menotyyppiNimi, tarkennus: e.target.value }
-        setValues( {
-            ...meno,  kohde: uusiKohde
-        });
-       
-    }
-    */
 
-    const lisaaMeno = (e) => {
+    const muokkaaMeno = (e) => {
         e.preventDefault();
 
         const formData = {
+            id: meno.id,
             menotyyppiNimi: meno.menotyyppiNimi,
             tarkennus: meno.tarkennus,
             maara: meno.maara,
             pvm: meno.pvm.getFullYear()+ '-' + meno.pvm.getMonth() + '-' + meno.pvm.getDate(),
           }
 
-        axios.post(url + '/meno/add', formData)
+        axios.post(url + '/meno/muokkaa', formData) ///:id/:maara/:tarkennus/:menotyyppiNimi/pvm'
         .then(response => {
           if (response.status === 200) {
-              setValues({
-                  menotyyppiNimi: '',
-                  tarkennus: '',
-                  maara: '',
-                  pvm: new Date(),
-              });
-              setViesti('Lisättiin');
+              setViesti('Muokattiin');
           } else {
-              setViesti('Lisäys ei onnistunut');
+              setViesti('Muokkaus ei onnistunut');
           }
       })
     }
 
-    const tyhjenna = (e) => {
-        //e.preventDefault();
-
-        setValues(
-            {id: '0', 
-            maara: '', 
-            menotyyppiNimi: '', 
-            tarkennus: '', 
-            pvm: date });
-
-    }
-    //tässä vain tyhjennetään lomake 
-
-    return (        
-        <div class='center'>
+    return (
+        <div>
         <Container>
-        <Typography variant='h6' color='secondary'>Lisää uusi meno</Typography>
+            <Typography variant='h6' color='secondary'>Lisää uusi meno</Typography>
         <FormControl className={classes.formControl} variant='outlined'> 
             <FormGroup>
                 <InputLabel id='maara'></InputLabel>
@@ -118,16 +88,17 @@ export default function Menolomake() {
                     
                 />
             </FormGroup>
-        </FormControl><br/>
+        </FormControl>
 
         <FormControl className={classes.formControl} required variant='outlined'> 
             <FormGroup>
-                <InputLabel id='menotyyppiNimi'>Menokategoria</InputLabel><br/>                
+                <InputLabel id='menotyyppiNimi'>Menotyyppi</InputLabel><br/>
                 <Select
                     name='menotyyppiNimi'
                     value={ meno.menotyyppiNimi}
                     onChange={ (e) => muuta(e) }
                     label="Menotyyppi"
+                    
                 >
                     <MenuItem value='Ruoka ja juoma kotona'>Ruoka ja juoma kotona</MenuItem>
                     <MenuItem value='Ruoka ja juoma ulkona'>Ruoka ja juoma ulkona</MenuItem>
@@ -142,10 +113,9 @@ export default function Menolomake() {
                     <MenuItem value='Oma säästökohde'>Oma säästökohde</MenuItem>
                     <MenuItem value='Lainanhoito'>Lainanhoito</MenuItem>
                     <MenuItem value='Muut menot'>Muut menot</MenuItem>
-                </Select>
-                
+                </Select><br/>
             </FormGroup>
-        </FormControl><br/>
+        </FormControl>
 
         <FormControl className={classes.formControl} variant='outlined'>
             <FormGroup>
@@ -161,7 +131,7 @@ export default function Menolomake() {
                     color="secondary"
                 />
             </FormGroup>
-        </FormControl><br/>
+        </FormControl>
 
         <FormControl className={classes.formControl} variant='outlined'>
             <FormGroup>
@@ -179,32 +149,23 @@ export default function Menolomake() {
                     />
                 </MuiPickersUtilsProvider>
             </FormGroup>
-        </FormControl><br/>
+        </FormControl>
 
         <FormControl className={classes.formControl}>
         <InputLabel id='nappi'></InputLabel>
             <Button 
                 variant="outlined"
-                size="small" 
-                color="primary"
-                type='submit'
-                onClick={ (e) => lisaaMeno(e) } 
-            > Lisää
-            </Button>
-            <p></p>
-            <InputLabel id='poistonappi'></InputLabel>
-            <Button 
-                variant="outlined"
-                size="small" 
+                size="large" 
                 color="secondary"
                 type='submit'
-                onClick={ (e) => tyhjenna() } 
-            > Tyhjennä
+                onClick={ (e) => muokkaaMeno(e) } 
+            > Lisää
             </Button>
         </FormControl>
         <Typography style={ {marginTop: 20} }>{ viesti }</Typography>
         </Container>
         </div>
-        
     );
 }
+
+export default MenolomakeEdit;

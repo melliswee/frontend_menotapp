@@ -1,6 +1,7 @@
 import React from 'react';
 import SummaKuukausittain from './SummaKuukausittain';
 
+//ei käytetä mihinkään vielä, kokeilu tehdä summaus menoista kullekin kuukaudelle
 function Jaottelija (props) {
     const kuukaudet = [
         {nimi: "Tammikuu", nro: 1, summa: 0},
