@@ -7,6 +7,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
 import {Link} from 'react-router-dom';
 import Summaaja from './Summaaja';
+import HaeMeno from './HaeMeno';
 import { makeStyles } from '@material-ui/core/styles';
 import indigo from '@material-ui/core/colors/indigo';
 
@@ -32,7 +33,7 @@ function Menolista(props) {
   const [menot, setMenot] = useState(props.menot);
   const [menoId, setId] = useState(0);
   const[summa, setSumma] = useState(0);
-//<Summaaja summa = { props.menot}/>
+
   const haeSumma = () => {
     let uusiSumma = <Summaaja summa = { menot}/>
     setSumma(uusiSumma);
@@ -63,10 +64,10 @@ function Menolista(props) {
   //saa parametrinä rivin id:n
   const muokkaa = async (thisRow) => {
       //halutut tiedot saatiin ja alert toimi
-      alert("Editoimisominaisuutta en saanut valmiiksi. Editoitavan menon id " + thisRow.id + ' muut tiedot: Määrä: ' + thisRow.maara + ', Muistiinpano: ' + thisRow.tarkennus + ', Kategoria: ' + thisRow.menotyyppiNimi + ', Päivämäärä: ' + thisRow.pvm);
+      //alert("Editoimisominaisuutta en saanut valmiiksi. Editoitavan menon id " + thisRow.id + ' muut tiedot: Määrä: ' + thisRow.maara + ', Muistiinpano: ' + thisRow.tarkennus + ', Kategoria: ' + thisRow.menotyyppiNimi + ', Päivämäärä: ' + thisRow.pvm);
       setId(thisRow.id);
       //tämä ei taida toimia?
-      return (<Link to= '/meno/muokkaa/:id' menoId={menoId}/>)
+      return (<HaeMeno menoId={menoId}/>) //(<Link to= '/meno/muokkaa/:id' menoId={menoId}/>)
   }
 
     const columns = [

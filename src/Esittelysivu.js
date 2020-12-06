@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {Container, Typography, Button, ButtonGroup} from '@material-ui/core'
 import { Link } from 'react-router-dom';
-import Jaottelija from './components/Jaottelija';
+//import Jaottelija from './components/Jaottelija';
 
 function Esittelysivu(props) {
     //const [menot, setMenot] = useState(props.menot);

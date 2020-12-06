@@ -57,8 +57,8 @@ function MenolomakeEdit(props) {
             maara: meno.maara,
             pvm: meno.pvm.getFullYear()+ '-' + meno.pvm.getMonth() + '-' + meno.pvm.getDate(),
           }
-
-        axios.post(url + '/meno/muokkaa', formData) ///:id/:maara/:tarkennus/:menotyyppiNimi/pvm'
+         //put vai post?
+        axios.put(url + '/meno/muokkaa/' + meno.id, formData) ///:id/:maara/:tarkennus/:menotyyppiNimi/pvm'
         .then(response => {
           if (response.status === 200) {
               setViesti('Muokattiin');

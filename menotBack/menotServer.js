@@ -55,7 +55,7 @@ app.post('/meno/add',  (req, res, next) => {
      })
  })
 //toimiiko?
- app.post('/meno/muokkaa',  (req, res, next) => {
+ app.put('/meno/muokkaa/:id',  (req, res, next) => {
      let tap = req.body; 
      /*
      let id = req.params.id;
@@ -64,7 +64,7 @@ app.post('/meno/add',  (req, res, next) => {
      let menotyyppiNimi = req.params.menotyyppiNimi;
      let pvm = req.params.pvm;
     */
-     db.run('UPDATE meno SET menotyyppiNimi=?, tarkennus=?, maara=?, pvm=?) WHERE id = ?', [tap.menotyyppiNimi, tap.tarkennus, tap.maara, tap.pvm, tap.id], function (error, result) {
+     db.run('UPDATE meno SET menotyyppiNimi=(?), tarkennus=(?), maara=(?), pvm=(?)) WHERE id = (?)', [tap.menotyyppiNimi, tap.tarkennus, tap.maara, tap.pvm, tap.id], function (error, result) {
          if (error) throw error;
  
          return res.status(200).json( {count: this.changes} );
