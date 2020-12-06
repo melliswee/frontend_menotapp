@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
-import { InputLabel, FormGroup, MenuItem, Select, TextField, Button, Container, Typography } from '@material-ui/core/';
+import { InputLabel, FormGroup, MenuItem, Select, TextField, Button, ButtonGroup, Container, Typography } from '@material-ui/core/';
 import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
+import {Link} from 'react-router-dom';
+import AddIcon from '@material-ui/icons/Add';
+import ListIcon from '@material-ui/icons/List';
+import ClearIcon from '@material-ui/icons/Clear';
 import DateFnsUtils from '@date-io/date-fns';
 import fiLocale from 'date-fns/locale/fi';
 import axios from 'axios';
@@ -97,11 +101,13 @@ export default function Menolomake() {
 
     }
     //tässä vain tyhjennetään lomake 
+    const style = {
+        textAlign: 'center'}
 
     return (        
         <div class='center'>
         <Container>
-        <Typography variant='h6' color='secondary'>Lisää uusi meno</Typography>
+        <Typography variant='h6' color='primary'>Uusi meno</Typography>
         <FormControl className={classes.formControl} variant='outlined'> 
             <FormGroup>
                 <InputLabel id='maara'></InputLabel>
@@ -122,7 +128,7 @@ export default function Menolomake() {
 
         <FormControl className={classes.formControl} required variant='outlined'> 
             <FormGroup>
-                <InputLabel id='menotyyppiNimi'>Menokategoria</InputLabel><br/>                
+                <InputLabel id='menotyyppiNimi' style={style}>Menokategoria</InputLabel><br/>                
                 <Select
                     name='menotyyppiNimi'
                     value={ meno.menotyyppiNimi}
@@ -183,24 +189,28 @@ export default function Menolomake() {
 
         <FormControl className={classes.formControl}>
         <InputLabel id='nappi'></InputLabel>
-            <Button 
-                variant="outlined"
-                size="small" 
-                color="primary"
+        <ButtonGroup color='primary' fullWidth>
+            <Button
+                variant='contained'
                 type='submit'
                 onClick={ (e) => lisaaMeno(e) } 
-            > Lisää
+            ><AddIcon/>
             </Button>
-            <p></p>
             <InputLabel id='poistonappi'></InputLabel>
             <Button 
                 variant="outlined"
-                size="small" 
                 color="secondary"
                 type='submit'
                 onClick={ (e) => tyhjenna() } 
-            > Tyhjennä
+            ><ClearIcon/>
             </Button>
+            <Button component={ Link } to='/listaa'
+                variant='contained'
+                color="secondary"
+            >
+            <ListIcon/>
+            </Button>
+        </ButtonGroup>
         </FormControl>
         <Typography style={ {marginTop: 20} }>{ viesti }</Typography>
         </Container>

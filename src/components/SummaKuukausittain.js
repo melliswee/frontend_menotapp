@@ -10,7 +10,7 @@ import {Container, Typography} from '@material-ui/core';
 
 //ei käytetä vielä mihinkään, yritys luoda kuukausittainen summaus menoista
 function SummaKuukausittain(props) {
-    
+     
     return ( 
         <div>
         <Container>

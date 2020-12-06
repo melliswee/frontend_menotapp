@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Menolista from './Menolista';
+import Jaottelija from './Jaottelija';
   const url = 'http://localhost:8080';
 
   function HaeMenot () {
@@ -30,7 +31,7 @@ import Menolista from './Menolista';
    }
    
    if (menot.length > 0) {
-     return ( <Menolista menot={ menot } /> );
+     return ( <Menolista menot={ menot } />/*, <Jaottelija menot={menot}/> */);
    }
 
    return ( <Typography>Yhtään menoa ei ole</Typography> );

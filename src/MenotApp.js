@@ -2,13 +2,13 @@
 import React from 'react';
 import {createMuiTheme, MuiThemeProvider, CssBaseline} from '@material-ui/core'
 //import Menolista from './components/Menolista';
-import MenolomakeEdit from './components/MenolomakeEdit';
 import Menolomake from './components/Menolomake';
 import MenuMUI from './components/MenuMUI';
-import { blue, pink } from '@material-ui/core/colors';
+import { blue, pink, blueGrey, indigo } from '@material-ui/core/colors';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Esittelysivu from './Esittelysivu';
 import HaeMenot from './components/HaeMenot';
+import HaeMeno from './components/HaeMeno';
 
 /*
 const menot = [{tapahtuma_id: '1', maara: '50', menotyyppiNimi: 'Ruoka ja juoma kotona', tarkennus: 'Alepa', pvm: '25.09.2020'},
@@ -33,10 +33,10 @@ const menot = [{tapahtuma_id: '1', maara: '50', menotyyppiNimi: 'Ruoka ja juoma 
 
 const theme= createMuiTheme({
     palette: { 
-        primary: {main: blue[500], contrastText: '#fafafa'}, //deepPurple: #673ab7 //red: #f44336 //tummansininen: '#303f9f'
-        secondary: {main: pink[500], contrastText: '#fafafa'}, //indigo: #3d5afe // teal: #1de9b6
-        text: {primary: blue[500], secondary: pink[500], contrastText: '#fafafa'}, 
-        action: {active: pink[500], hover: pink[200], selected: pink[300]},
+        primary: {main: indigo[700], contrastText: '#fafafa'}, //deepPurple: #673ab7 //red: #f44336 //tummansininen: '#303f9f'
+        secondary: {main: blueGrey[600], contrastText: '#fafafa'}, //indigo: #3d5afe // teal: #1de9b6
+        text: {primary: indigo[500], secondary: pink[blueGrey], contrastText: '#fafafa'}, 
+        action: {active: pink[500], hover: blue[200], selected: blue[300]},
         background: {default: '#fafafa'}
      },
     typography: { fontFamily: ['PT Sans', 'sans-serif'], },
@@ -58,9 +58,8 @@ function MenotApp() {
                     {/*<Route path='/listaa' 
                         render={(props) => <Menolista {...props} menot={ menot }/>} />*/}
                     <Route path='/lisaa' component={ Menolomake }/>
-                    <Route path='/meno/muokkaa' component={ MenolomakeEdit } />
-                    {/* <Route path='/meno/muokkaa' component={ MenolomakeEdit } />
-                    /:id/:maara/:tarkennus/:menotyyppiNimi/:pvm */}
+                    <Route path='/meno/muokkaa/:id' component={ HaeMeno } />
+                    {/*/:id/:maara/:tarkennus/:menotyyppiNimi/:pvm */}
                     <Route component={ MenotApp }/>
                 </Switch>
 

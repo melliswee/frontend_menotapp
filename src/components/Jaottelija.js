@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import SummaKuukausittain from './SummaKuukausittain';
 
-//ei käytetä mihinkään vielä, kokeilu tehdä summaus menoista kullekin kuukaudelle
+// ei käytetä mihinkään vielä, kokeilu tehdä summaus menoista kullekin kuukaudelle
+// tämä komponentti jakaa saamansa menot kuukausiin ja laskee kunkin kuukauden summan
+// ja lähettää sen aseteltavaksi
 function Jaottelija (props) {
     const kuukaudet = [
         {nimi: "Tammikuu", nro: 1, summa: 0},
@@ -18,21 +20,25 @@ function Jaottelija (props) {
         {nimi: "Joulukuu", nro: 12, summa: 0},
     ];
 
-    props.jaettava.map( rivi => {
-        let date = new Date();
-        let month= date.parseDate(rivi.pvm).getMonth();
+    const jaottele = () => {
+        props.jaettava.map( rivi => {
+            let date = new Date();
+            let month= date.parseDate(rivi.pvm).getMonth();
+    
+            kuukaudet.map(kuukausi => {
+                if (kuukausi.nro === month) {
+                    let summa = rivi.summa;
+                    summa += rivi.summa;
+                    rivi.summa = summa;
+                }
+                console.log("Kuukauden summa on " + kuukausi.summa);
+            }) 
+        }) //mappaus loppuu
+    } //funktion loppu
 
-        kuukaudet.map(kuukausi => {
-            if (kuukausi.nro === month) {
-                let summa = rivi.summa;
-                summa += rivi.summa;
-                rivi.summa = summa;
-            }
-            //console.log("Kuukauden summa on " + kuukausi.summa);
-        })
-        
-    })
-
+    useEffect( () => {
+        jaottele();
+   }, [])
 
     return ( <SummaKuukausittain kuukaudet={ kuukaudet } /> );
 }

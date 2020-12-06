@@ -1,41 +1,46 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { DataGrid } from '@material-ui/data-grid';
-import {Typography, Button} from '@material-ui/core';
+import {Typography, Button, Container, Card, CardHeader, IconButton} from '@material-ui/core';
 import axios from 'axios';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import AddIcon from '@material-ui/icons/Add';
+import {Link} from 'react-router-dom';
+import Summaaja from './Summaaja';
+import { makeStyles } from '@material-ui/core/styles';
+import indigo from '@material-ui/core/colors/indigo';
 
-//import MenolomakeEdit from './MenolomakeEdit';
-//import TextField from '@material-ui/core/TextField';
-//import Dialog from '@material-ui/core/Dialog';
-//import DialogActions from '@material-ui/core/DialogActions';
-//import DialogContent from '@material-ui/core/DialogContent';
-//import DialogContentText from '@material-ui/core/DialogContentText';
-//import DialogTitle from '@material-ui/core/DialogTitle';
-
-//https://material-ui.com/components/tables/#data-table --> käytettiin apuna material-ui:n datagridiä, jolla 
+// https://material-ui.com/components/tables/#data-table --> käytettiin apuna material-ui:n datagridiä, jolla 
 // pystyy sorttaamaan sarakkeiden tiedot helposti nousevaksi ja laskevaksi
-//alla kommenteissa on alkuperäinen himmeli, jossa oli id:n kanssa ongelmia ja jolla listasin menot
-function Menolista(props) {
+// alla kommenteissa on alkuperäinen himmeli, jossa oli id:n kanssa ongelmia ja jolla listasin menot
+// Muokkaus-napista ei vaikuta tapahtuvan mitään, joten näkyy alert, jossa
+// on rivin tiedot.
 
+const useStyles = makeStyles({
+  card: {
+    marginTop: 15, 
+    maxWidth: 500, minWidth: 200,
+    color: indigo[700],
+  },
+});
+
+function Menolista(props) {
+  const classes = useStyles();
   const url = 'http://localhost:8080';
 
   const [viesti, setViesti] = useState('');
   const [menot, setMenot] = useState(props.menot);
-  //let date = new Date();
-  //const [meno, setValues] = useState( { id: '0', maara: '', menotyyppiNimi: '', tarkennus: '', pvm: date } );
-  //const [open, setOpen] = useState(false);
+  const [menoId, setId] = useState(0);
+  const[summa, setSumma] = useState(0);
+//<Summaaja summa = { props.menot}/>
+  const haeSumma = () => {
+    let uusiSumma = <Summaaja summa = { menot}/>
+    setSumma(uusiSumma);
+  }
 
-  /*dialog-box
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  //dialog-box
-  const handleClose = () => {
-    setOpen(false);
-  };
-*/
+  useEffect( () => {
+    haeSumma();
+}, [menot])
 
   const poista = async (id) => {
     try {
@@ -55,10 +60,13 @@ function Menolista(props) {
     }
   }
 
+  //saa parametrinä rivin id:n
   const muokkaa = async (thisRow) => {
       //halutut tiedot saatiin ja alert toimi
       alert("Editoimisominaisuutta en saanut valmiiksi. Editoitavan menon id " + thisRow.id + ' muut tiedot: Määrä: ' + thisRow.maara + ', Muistiinpano: ' + thisRow.tarkennus + ', Kategoria: ' + thisRow.menotyyppiNimi + ', Päivämäärä: ' + thisRow.pvm);
-      //return <MenolomakeEdit meno={meno}/>
+      setId(thisRow.id);
+      //tämä ei taida toimia?
+      return (<Link to= '/meno/muokkaa/:id' menoId={menoId}/>)
   }
 
     const columns = [
@@ -99,17 +107,6 @@ function Menolista(props) {
                   fields.forEach((f) => {
                     thisRow[f] = params.getValue(f);
                   });
-
-                  {/*}
-                  setValues({
-                    id: thisRow.id,
-                    menotyyppiNimi: thisRow.menotyyppiNimi,
-                    tarkennus: thisRow.tarkennus,
-                    maara: thisRow.maara,
-                    pvm: thisRow.pvm,
-                });
-                */}
-                //return (<MenolomakeEdit meno={meno}/>);
 
                 muokkaa(thisRow);
                   
@@ -154,7 +151,18 @@ function Menolista(props) {
       return (
 
         <div>
+          <Container class='center'>
+            <Card className={classes.card}>
+            <CardHeader
+                  title={`Olet käyttänyt yhteensä`}
+                  subheader={ summa }
+            />
+          </Card>
+          </Container>
             <Typography variant='h6' color='secondary'>Menot</Typography>
+            <IconButton component={ Link } to='/lisaa'>
+            <AddIcon/>
+            </IconButton>
             <div style={{ height: 500, width: '100%' }}>
               <DataGrid rows={rows} columns={columns} pageSize={10} />
             </div>
@@ -166,7 +174,7 @@ function Menolista(props) {
 
 export default Menolista; 
 
-   /*
+   /* aiempi tapa listata menot:
     return ( 
         
         <div>

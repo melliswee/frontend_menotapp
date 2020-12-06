@@ -10,7 +10,7 @@ function Summaaja (props) {
 
     return (
         <div>
-            {summa}
+            {summa} euroa
         </div>
     );
 

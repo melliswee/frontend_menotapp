@@ -81,7 +81,6 @@ app.get('/meno/delete/:id', (req, res, next) => {
 
         return res.status(200).json( {count: this.changes} );
     });
-
 });
 
 // Jos mikään aiempi reititys on sopinut, silloin suoritetaan tämä
