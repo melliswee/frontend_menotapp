@@ -64,7 +64,7 @@ function Menolista(props) {
   //saa parametrinä rivin id:n
   const muokkaa = async (thisRow) => {
       //halutut tiedot saatiin ja alert toimi
-      //alert("Editoimisominaisuutta en saanut valmiiksi. Editoitavan menon id " + thisRow.id + ' muut tiedot: Määrä: ' + thisRow.maara + ', Muistiinpano: ' + thisRow.tarkennus + ', Kategoria: ' + thisRow.menotyyppiNimi + ', Päivämäärä: ' + thisRow.pvm);
+      alert("Editoimisominaisuutta en saanut valmiiksi. Editoitavan menon id " + thisRow.id + ' muut tiedot: Määrä: ' + thisRow.maara + ', Muistiinpano: ' + thisRow.tarkennus + ', Kategoria: ' + thisRow.menotyyppiNimi + ', Päivämäärä: ' + thisRow.pvm);
       setId(thisRow.id);
       //tämä ei taida toimia?
       return (<HaeMeno menoId={menoId}/>) //(<Link to= '/meno/muokkaa/:id' menoId={menoId}/>)
