@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-  const url = 'http://localhost:8080';
+  //const url = 'http://localhost:8080';
+  const url = 'https://menotapp.herokuapp.com'
 
 function MenolomakeEdit(props) {
     const classes = useStyles();

@@ -27,7 +27,8 @@ const useStyles = makeStyles({
 
 function Menolista(props) {
   const classes = useStyles();
-  const url = 'http://localhost:8080';
+  //const url = 'http://localhost:8080';
+  const url = 'https://menotapp.herokuapp.com'
 
   const [viesti, setViesti] = useState('');
   const [menot, setMenot] = useState(props.menot);

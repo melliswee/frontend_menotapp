@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Menolista from './Menolista';
 //import Jaottelija from './Jaottelija';
-  const url = 'http://localhost:8080';
+  //const url = 'http://localhost:8080';
+  const url = 'https://menotapp.herokuapp.com'
 
   function HaeMenot () {
    

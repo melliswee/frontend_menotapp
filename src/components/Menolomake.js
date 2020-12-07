@@ -23,7 +23,8 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-  const url = 'http://localhost:8080';
+  //const url = 'http://localhost:8080';
+  const url = 'https://menotapp.herokuapp.com'
 
 export default function Menolomake() {
     let date = new Date();
