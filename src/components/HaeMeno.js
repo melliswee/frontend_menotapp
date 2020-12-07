@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import MenolomakeEdit from './MenolomakeEdit';
-  const url = 'http://localhost:8080';
 
   // Komponentin tarkoitus olisi hakea muokattava meno tietokannasta id:n avulla ja sitten lähettää se 
   // muokkauslomakkeelle (MenolomakeEdit), jossa muokkaus ja sen tallennus tapahtuu.
   // Muokkaus-napista ei kuitenkaan vaikuta tapahtuvan mitään, joten näkyy alert, jossa
   // on rivin tiedot.
   function HaeMeno (props) {
-   
+   const url = 'http://localhost:8080'
    const [meno, setMeno] = useState({});
    const [virhe, setVirhe] = useState('Haetaan');
 
