@@ -7,10 +7,10 @@ import MenolomakeEdit from './MenolomakeEdit';
   // muokkauslomakkeelle (MenolomakeEdit), jossa muokkaus ja sen tallennus tapahtuu.
   // Muokkaus-napista ei kuitenkaan vaikuta tapahtuvan mitään, joten näkyy alert, jossa
   // on rivin tiedot.
-  const url = 'https://menotapp.herokuapp.com'
+  
 
   function HaeMeno (props) {
-   
+   const url = 'https://menotapp.herokuapp.com'
    const [meno, setMeno] = useState({});
    const [virhe, setVirhe] = useState('Haetaan');
 
